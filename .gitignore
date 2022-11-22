@@ -1,5 +1,5 @@
-*.ko
-*.mod
+*.ko*
+*.mod*
 *.symvers
 *.order
 user_program
