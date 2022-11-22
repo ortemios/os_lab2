@@ -1,5 +1,7 @@
-*.ko*
-*.mod*
+*.ko
+*.cmd
+*.mod.*
+*.mod
 *.symvers
 *.order
 user_program
