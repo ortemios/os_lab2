@@ -1,1 +1,0 @@
-cmd_/home/john/Desktop/os_lab2/kernel_module.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/john/Desktop/os_lab2/kernel_module.ko /home/john/Desktop/os_lab2/kernel_module.o /home/john/Desktop/os_lab2/kernel_module.mod.o;  true
