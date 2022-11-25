@@ -15,6 +15,7 @@
 #include <linux/path.h>
 #include <linux/sched/cputime.h>
 #include <linux/path.h>
+#include <linux/mutex.h>
 
 #define BUFFER_SIZE 128
 
@@ -26,6 +27,7 @@ MODULE_VERSION("1.0");
 static struct dentry *kmod_dir;
 static char vfs_path[BUFFER_SIZE];
 static int pid;
+static struct mutex lock;
 
 static int write_output(struct seq_file *file, void *data) {
     struct task_struct* task = get_pid_task(find_get_pid(pid), PIDTYPE_PID);
@@ -51,10 +53,12 @@ static int write_output(struct seq_file *file, void *data) {
 }
 
 static ssize_t write_structures(struct file *file, const char __user *buffer, size_t length, loff_t *ptr_offset) {
+    mutex_lock(&lock);
     char input_buf[BUFFER_SIZE];
     copy_from_user(input_buf, buffer, length);
     sscanf(input_buf, "task_cputime (pid): %d, vfsmount (path): %s",  &pid, vfs_path);
     single_open(file, write_output, NULL);
+    mutex_unlock(&lock);
     return strlen(input_buf);
 }
 
@@ -64,6 +68,7 @@ static struct file_operations fops = {
 };
 
 static int __init mod_init(void) {
+    mutex_init(&lock);
     kmod_dir = debugfs_create_dir("lab", NULL);
     debugfs_create_file("2", 0644, kmod_dir, NULL, &fops);
     return 0;
