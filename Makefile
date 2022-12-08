@@ -13,4 +13,4 @@ install: build
 reinstall: build
 	sudo rmmod kernel_module
 	sudo insmod kernel_module.ko
-	gcc -o user_program user_program.c
+	gcc -Wint-conversion -o user_program user_program.c
