@@ -7,23 +7,20 @@
 
 int main(int argc, char *argv[]) {
     int pid;
-    int vendor_id, device_id;
     FILE *file = fopen("/sys/kernel/debug/lab/2", "r+");
     if (
-        sscanf(argv[1], "%d", &pid) && 
-        sscanf(argv[2], "%d", &vendor_id) && 
-        sscanf(argv[3], "%d", &device_id) && 
+        sscanf(argv[1], "%d", &pid) &&
         file
     ) {
         char *buffer[BUFFER_SIZE];
-        fprintf(file, "pid: %d, vendor_id: %d, device_id: %d\n", pid, vendor_id, device_id);
+        printf("pid: %d\n", pid);
         while (true) {
             char *result = fgets(buffer, BUFFER_SIZE, file);
             if (feof(file)) break;
             printf(result);
         }
     } else {
-        printf("Usage: sudo ./user_program `pid` `vendor_id` `device_id`");
+        printf("Usage: sudo ./user_program `pid`");
     }
     fclose(file);
     return 0;
